@@ -5,13 +5,16 @@ import PackageDescription
 
 let package = Package(
     name: "PaperClip",
+    platforms: [.iOS(.v14)],
     products: [
-        .library(name: "Model", targets: ["Model"]),
+        .library(name: "RemoteStore", targets: ["RemoteStore"])
     ],
     dependencies: [
     ],
     targets: [
-        .target(name: "Model"),
-        .testTarget(name: "ModelTests", dependencies: ["Model"]),
+        .target(name: "RemoteStore"),
+        .testTarget(name: "RemoteStoreTests",
+                    dependencies: ["RemoteStore"],
+                    resources: [.copy("Stub")])
     ]
 )
