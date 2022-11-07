@@ -1,5 +1,5 @@
 //
-//  HTTPClient.swift
+//  CategoriesRemoteStore.swift
 //  
 //
 //  Created by Grinch on 06/11/2022.
@@ -8,11 +8,11 @@
 import Foundation
 import Combine
 
-enum RemoteStoreError: Error {
+enum CategoriesRemoteStoreError: Error {
     case somethingWrong
 }
 
-class RemoteStore {
+class CategoriesRemoteStore {
     
     // MARK: Private properties
     private let httpDataProvider: HTTPDataProvider
@@ -29,24 +29,14 @@ class RemoteStore {
         self.httpDataProvider = httpDataProvider
         urlRequestFactory = URLRequestFactory()
     }
-    
-    func getAds() -> AnyPublisher<[ClassifiedAdDTO], RemoteStoreError> {
-        let urlRequest = urlRequestFactory.makeUrlRequest(for: .ads)
-        
-        return httpDataProvider.dataPublisher(for: urlRequest)
-            .map(\.data)
-            .decode(type: [ClassifiedAdDTO].self, decoder: jsonDecoder)
-            .mapError { _ in RemoteStoreError.somethingWrong }
-            .eraseToAnyPublisher()
-    }
- 
-    func getCategoriess() -> AnyPublisher<[CategoryDTO], RemoteStoreError> {
+
+    func getCategoriess() -> AnyPublisher<[CategoryDTO], CategoriesRemoteStoreError> {
         let urlRequest = urlRequestFactory.makeUrlRequest(for: .category)
         
         return httpDataProvider.dataPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [CategoryDTO].self, decoder: jsonDecoder)
-            .mapError { _ in RemoteStoreError.somethingWrong }
+            .mapError { _ in CategoriesRemoteStoreError.somethingWrong }
             .eraseToAnyPublisher()
     }
 }

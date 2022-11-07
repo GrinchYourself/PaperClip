@@ -10,7 +10,7 @@ import Combine
 import Foundation
 @testable import RemoteStore
 
-final class RemoteStoreTests: XCTestCase {
+final class RemoteStoresTests: XCTestCase {
 
     var cancellables: Set<AnyCancellable> = []
     
@@ -26,7 +26,7 @@ final class RemoteStoreTests: XCTestCase {
 
     func testSuccessGetAdsListing() {
         let dependencies = MockHTTPDataProvider(status: .adsSuccess)
-        let remoteStore = RemoteStore(httpDataProvider: dependencies)
+        let remoteStore = AdsRemoteStore(httpDataProvider: dependencies)
         
         let expectation = XCTestExpectation(description: "get Listing Ads success")
         
@@ -53,7 +53,7 @@ final class RemoteStoreTests: XCTestCase {
 
     func testFailureGetAdsListing() {
         let dependencies = MockHTTPDataProvider(status: .adsFailure)
-        let remoteStore = RemoteStore(httpDataProvider: dependencies)
+        let remoteStore = AdsRemoteStore(httpDataProvider: dependencies)
         
         let expectation = XCTestExpectation(description: "get Listing Ads failure")
         
@@ -72,7 +72,7 @@ final class RemoteStoreTests: XCTestCase {
 
     func testSuccessGetCategoriesListing() {
         let dependencies = MockHTTPDataProvider(status: .categoriesSuccess)
-        let remoteStore = RemoteStore(httpDataProvider: dependencies)
+        let remoteStore = CategoriesRemoteStore(httpDataProvider: dependencies)
         
         let expectation = XCTestExpectation(description: "get Listing Categories success")
         
@@ -95,7 +95,7 @@ final class RemoteStoreTests: XCTestCase {
 
     func testFailureGetCategoriesListing() {
         let dependencies = MockHTTPDataProvider(status: .categoriesFailure)
-        let remoteStore = RemoteStore(httpDataProvider: dependencies)
+        let remoteStore = CategoriesRemoteStore(httpDataProvider: dependencies)
         
         let expectation = XCTestExpectation(description: "get Listing Categories failure")
         

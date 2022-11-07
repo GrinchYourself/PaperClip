@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC5FBF9929182FBB008CEFC7 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = AC5FBF9829182FBB008CEFC7 /* Domain */; };
 		AC5FBF9C29183154008CEFC7 /* URLSession+HTTPDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5FBF9B29183154008CEFC7 /* URLSession+HTTPDataProvider.swift */; };
 		ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = ACC1398A2917E79900BF80F0 /* RemoteStore */; };
 		ACDE0F682917C8AC00A0271D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F672917C8AC00A0271D /* AppDelegate.swift */; };
@@ -49,7 +48,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC5FBF9929182FBB008CEFC7 /* Domain in Frameworks */,
 				ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +138,6 @@
 			name = PaperClipApp;
 			packageProductDependencies = (
 				ACC1398A2917E79900BF80F0 /* RemoteStore */,
-				AC5FBF9829182FBB008CEFC7 /* Domain */,
 			);
 			productName = PaperClipApp;
 			productReference = ACDE0F642917C8AC00A0271D /* PaperClipApp.app */;
@@ -527,10 +524,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AC5FBF9829182FBB008CEFC7 /* Domain */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Domain;
-		};
 		ACC1398A2917E79900BF80F0 /* RemoteStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RemoteStore;
