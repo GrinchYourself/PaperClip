@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Domain
 
-struct CategoryDTO: Decodable {
+struct CategoryDTO: Decodable, Domain.Category {
     let id: Int
     let name: String
 }

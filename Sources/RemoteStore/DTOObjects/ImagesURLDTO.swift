@@ -6,8 +6,21 @@
 //
 
 import Foundation
+import Domain
 
-struct ImagesURLDTO: Decodable {
-    let small: String?
-    let thumb: String?
+struct ImagesURLDTO: Decodable, ImagesURL {
+    // MARK: Decodable
+    let smallDTO: String?
+    let thumbDTO: String?
+
+    // MARK: Domain
+    var small: URL? {
+        guard let smallDTO else { return nil }
+        return URL(string: smallDTO)
+    }
+
+    var thumb: URL? {
+        guard let thumbDTO else { return nil }
+        return URL(string: thumbDTO)
+    }
 }

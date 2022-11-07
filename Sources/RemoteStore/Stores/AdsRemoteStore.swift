@@ -7,12 +7,9 @@
 
 import Foundation
 import Combine
+import Domain
 
-enum AdsRemoteStoreError: Error {
-    case somethingWrong
-}
-
-class AdsRemoteStore {
+public class AdsRemoteStore: Domain.AdsRemoteStoreProtocol {
     
     // MARK: Private properties
     private let httpDataProvider: HTTPDataProvider
@@ -25,17 +22,17 @@ class AdsRemoteStore {
     }
 
     //MARK: Init
-    init(httpDataProvider: HTTPDataProvider) {
+    public init(httpDataProvider: HTTPDataProvider) {
         self.httpDataProvider = httpDataProvider
         urlRequestFactory = URLRequestFactory()
     }
     
-    func getAds() -> AnyPublisher<[ClassifiedAdDTO], AdsRemoteStoreError> {
+    public func getAds() -> AnyPublisher<[Ad], AdsRemoteStoreError> {
         let urlRequest = urlRequestFactory.makeUrlRequest(for: .ads)
-        
         return httpDataProvider.dataPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [ClassifiedAdDTO].self, decoder: jsonDecoder)
+            .map { classifiedAdDTO -> [Ad] in classifiedAdDTO }
             .mapError { _ in AdsRemoteStoreError.somethingWrong }
             .eraseToAnyPublisher()
     }

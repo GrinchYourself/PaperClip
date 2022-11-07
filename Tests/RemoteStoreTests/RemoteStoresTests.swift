@@ -46,6 +46,7 @@ final class RemoteStoresTests: XCTestCase {
             XCTAssertEqual("123 323 002", ad?.siret)
             XCTAssertEqual("Professeur natif d'espagnol à domicile", ad?.title)
             XCTAssertEqual(25, ad?.price)
+            XCTAssertNil(ad?.imagesUrl)
         }.store(in: &cancellables)
 
         wait(for: [expectation], timeout: 0.5)
@@ -76,7 +77,7 @@ final class RemoteStoresTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "get Listing Categories success")
         
-        remoteStore.getCategoriess().sink { completion in
+        remoteStore.getCategories().sink { completion in
             switch completion {
             case .finished:
                 expectation.fulfill()
@@ -99,7 +100,7 @@ final class RemoteStoresTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "get Listing Categories failure")
         
-        remoteStore.getCategoriess().sink { completion in
+        remoteStore.getCategories().sink { completion in
             switch completion {
             case .finished:
                 XCTFail("Success not expected")

@@ -7,14 +7,25 @@ let package = Package(
     name: "PaperClip",
     platforms: [.iOS(.v14)],
     products: [
-        .library(name: "RemoteStore", targets: ["RemoteStore"])
+        .library(name: "Domain", targets: ["Domain"]),
+        .library(name: "RemoteStore", targets: ["RemoteStore"]),
+        .library(name: "Repository", targets: ["Repository"])
     ],
     dependencies: [
     ],
     targets: [
-        .target(name: "RemoteStore"),
+        //Domain
+        .target(name: "Domain"),
+        //RemoteStore
+        .target(name: "RemoteStore",
+                dependencies: ["Domain"]),
         .testTarget(name: "RemoteStoreTests",
                     dependencies: ["RemoteStore"],
-                    resources: [.copy("Stub")])
+                    resources: [.copy("Stub")]),
+        //Repository
+        .target(name: "Repository",
+                dependencies: ["Domain"]),
+        .testTarget(name: "RepositoryTests",
+                    dependencies: ["Repository"])
     ]
 )

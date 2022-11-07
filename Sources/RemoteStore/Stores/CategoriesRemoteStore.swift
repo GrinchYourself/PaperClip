@@ -7,12 +7,9 @@
 
 import Foundation
 import Combine
+import Domain
 
-enum CategoriesRemoteStoreError: Error {
-    case somethingWrong
-}
-
-class CategoriesRemoteStore {
+public class CategoriesRemoteStore: CategoriesRemoteStoreProtocol {
     
     // MARK: Private properties
     private let httpDataProvider: HTTPDataProvider
@@ -25,17 +22,18 @@ class CategoriesRemoteStore {
     }
 
     //MARK: Init
-    init(httpDataProvider: HTTPDataProvider) {
+    public init(httpDataProvider: HTTPDataProvider) {
         self.httpDataProvider = httpDataProvider
         urlRequestFactory = URLRequestFactory()
     }
 
-    func getCategoriess() -> AnyPublisher<[CategoryDTO], CategoriesRemoteStoreError> {
+    public func getCategories() -> AnyPublisher<[Domain.Category], CategoriesRemoteStoreError> {
         let urlRequest = urlRequestFactory.makeUrlRequest(for: .category)
         
         return httpDataProvider.dataPublisher(for: urlRequest)
             .map(\.data)
             .decode(type: [CategoryDTO].self, decoder: jsonDecoder)
+            .map { categoriesDTO -> [Domain.Category] in categoriesDTO }
             .mapError { _ in CategoriesRemoteStoreError.somethingWrong }
             .eraseToAnyPublisher()
     }
