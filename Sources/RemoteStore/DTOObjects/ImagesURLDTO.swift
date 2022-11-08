@@ -13,6 +13,11 @@ struct ImagesURLDTO: Decodable, ImagesURL {
     let smallDTO: String?
     let thumbDTO: String?
 
+    enum CodingKeys: String, CodingKey {
+        case smallDTO = "small"
+        case thumbDTO = "thumb"
+    }
+
     // MARK: Domain
     var small: URL? {
         guard let smallDTO else { return nil }

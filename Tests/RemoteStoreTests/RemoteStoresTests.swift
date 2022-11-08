@@ -47,6 +47,10 @@ final class RemoteStoresTests: XCTestCase {
             XCTAssertEqual("Professeur natif d'espagnol à domicile", ad?.title)
             XCTAssertEqual(25, ad?.price)
             XCTAssertNil(ad?.imagesUrl)
+
+            let adWithImageURL = ads.first(where: { $0.id == 1691247255 })
+            XCTAssertNotNil(adWithImageURL)
+            XCTAssertEqual("https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-small/633f278423b9aa6b04fa9cc954079befd294473f.jpg", adWithImageURL?.imagesUrl?.small?.absoluteString)
         }.store(in: &cancellables)
 
         wait(for: [expectation], timeout: 0.5)
