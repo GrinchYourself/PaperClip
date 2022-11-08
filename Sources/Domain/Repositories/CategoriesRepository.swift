@@ -13,6 +13,10 @@ public enum CategoriesRepositoryError: Error {
     case somethingWrong
 }
 
+public protocol HasCategoriesRepository {
+    var categoriesRepository: CategoriesRepositoryProtocol { get }
+}
+
 public protocol CategoriesRepositoryProtocol {
     func categories() -> AnyPublisher<[Category], CategoriesRepositoryError>
 }

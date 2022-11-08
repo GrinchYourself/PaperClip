@@ -12,6 +12,10 @@ public enum AdsRemoteStoreError: Error {
     case somethingWrong
 }
 
+public protocol HasAdsRemoteStore {
+    var adsRemoteStore: AdsRemoteStoreProtocol { get }
+}
+
 public protocol AdsRemoteStoreProtocol {
     func getAds() -> AnyPublisher<[Ad], AdsRemoteStoreError>
 }
