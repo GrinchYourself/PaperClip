@@ -10,9 +10,11 @@
 		AC4A21F3291991EE00AE74F7 /* Repository in Frameworks */ = {isa = PBXBuildFile; productRef = AC4A21F2291991EE00AE74F7 /* Repository */; };
 		AC4A21F5291996B500AE74F7 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = AC4A21F4291996B500AE74F7 /* Domain */; };
 		AC5FBF9C29183154008CEFC7 /* URLSession+HTTPDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC5FBF9B29183154008CEFC7 /* URLSession+HTTPDataProvider.swift */; };
+		AC97537D291C1AA50018A531 /* ListingAdsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC97537C291C1AA50018A531 /* ListingAdsViewModel.swift */; };
+		AC97537F291C20A70018A531 /* AdItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC97537E291C20A70018A531 /* AdItem.swift */; };
 		ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = ACC1398A2917E79900BF80F0 /* RemoteStore */; };
 		ACDE0F682917C8AC00A0271D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F672917C8AC00A0271D /* AppDelegate.swift */; };
-		ACDE0F6C2917C8AC00A0271D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F6B2917C8AC00A0271D /* ViewController.swift */; };
+		ACDE0F6C2917C8AC00A0271D /* ListingAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F6B2917C8AC00A0271D /* ListingAdsViewController.swift */; };
 		ACDE0F712917C8AC00A0271D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACDE0F702917C8AC00A0271D /* Assets.xcassets */; };
 		ACDE0F742917C8AC00A0271D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACDE0F722917C8AC00A0271D /* LaunchScreen.storyboard */; };
 		ACDE0F7F2917C8AD00A0271D /* PaperClipAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F7E2917C8AD00A0271D /* PaperClipAppTests.swift */; };
@@ -33,9 +35,11 @@
 /* Begin PBXFileReference section */
 		AC0C15F82917CEF3000A8C9B /* PaperClip */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PaperClip; path = ..; sourceTree = "<group>"; };
 		AC5FBF9B29183154008CEFC7 /* URLSession+HTTPDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+HTTPDataProvider.swift"; sourceTree = "<group>"; };
+		AC97537C291C1AA50018A531 /* ListingAdsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingAdsViewModel.swift; sourceTree = "<group>"; };
+		AC97537E291C20A70018A531 /* AdItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdItem.swift; sourceTree = "<group>"; };
 		ACDE0F642917C8AC00A0271D /* PaperClipApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaperClipApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACDE0F672917C8AC00A0271D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ACDE0F6B2917C8AC00A0271D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ACDE0F6B2917C8AC00A0271D /* ListingAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingAdsViewController.swift; sourceTree = "<group>"; };
 		ACDE0F702917C8AC00A0271D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACDE0F732917C8AC00A0271D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ACDE0F752917C8AC00A0271D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +78,32 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		AC975379291C1A3A0018A531 /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				AC97537B291C1A600018A531 /* AdDetails */,
+				AC97537A291C1A530018A531 /* ListingAds */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
+		AC97537A291C1A530018A531 /* ListingAds */ = {
+			isa = PBXGroup;
+			children = (
+				AC97537C291C1AA50018A531 /* ListingAdsViewModel.swift */,
+				ACDE0F6B2917C8AC00A0271D /* ListingAdsViewController.swift */,
+				AC97537E291C20A70018A531 /* AdItem.swift */,
+			);
+			path = ListingAds;
+			sourceTree = "<group>";
+		};
+		AC97537B291C1A600018A531 /* AdDetails */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AdDetails;
+			sourceTree = "<group>";
+		};
 		ACC139872917D21300BF80F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,8 +137,8 @@
 				ACF0B59A291AEFDA0002D9C0 /* Coordinator */,
 				ACF0B59D291AF88F0002D9C0 /* Dependencies */,
 				AC5FBF9A2918312A008CEFC7 /* Extension */,
+				AC975379291C1A3A0018A531 /* Screen */,
 				ACDE0F672917C8AC00A0271D /* AppDelegate.swift */,
-				ACDE0F6B2917C8AC00A0271D /* ViewController.swift */,
 				ACDE0F702917C8AC00A0271D /* Assets.xcassets */,
 				ACDE0F722917C8AC00A0271D /* LaunchScreen.storyboard */,
 				ACDE0F752917C8AC00A0271D /* Info.plist */,
@@ -245,8 +275,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACDE0F6C2917C8AC00A0271D /* ViewController.swift in Sources */,
+				ACDE0F6C2917C8AC00A0271D /* ListingAdsViewController.swift in Sources */,
 				AC5FBF9C29183154008CEFC7 /* URLSession+HTTPDataProvider.swift in Sources */,
+				AC97537D291C1AA50018A531 /* ListingAdsViewModel.swift in Sources */,
+				AC97537F291C20A70018A531 /* AdItem.swift in Sources */,
 				ACF0B59C291AEFEA0002D9C0 /* Coordinator.swift in Sources */,
 				ACF0B59F291AF8B50002D9C0 /* Dependencies.swift in Sources */,
 				ACDE0F682917C8AC00A0271D /* AppDelegate.swift in Sources */,
