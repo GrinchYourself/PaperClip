@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct AdItem {
+struct AdItem: Hashable {
     let identifier: Int
-    let price: Double
+    let creationDate: Date
     let isUrgent: Bool
     let thumbImageURL: URL?
-    let creationDate: Date
     let title: String
     let category: String
+    let price: String?
 }
 
 extension AdItem: Comparable {

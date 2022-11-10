@@ -10,15 +10,27 @@ import Combine
 
 class ListingAdsViewController: UIViewController {
 
+    // MARK: Enum
+    enum TableViewSection: Hashable {
+        case main
+    }
+
+    enum K {
+        static let cellIdentifier = "AdItemTableViewCell"
+    }
+
     // MARK: UI
     private var tableView = UITableView(frame: CGRect.zero, style: .grouped)
-//    {
-//        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "toto")
-//        return tableView
-//    }
+    private lazy var tableViewDataSource: UITableViewDiffableDataSource< TableViewSection, AdItem> = {
+        UITableViewDiffableDataSource<TableViewSection, AdItem>.init(tableView: tableView) {
+            tableView, indexPath, adItem in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier) as? AdItemTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure(for: adItem)
+            return cell
+        }
+    }()
 
     // MARK: Private properties
     private let viewModel: ListingAdsViewModeling
@@ -56,7 +68,7 @@ class ListingAdsViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] adItems in
                 self?.adItems = adItems
-                self?.tableView.reloadData()
+                self?.makeDataSnapshot(for: adItems)
             }.store(in: &subscriptions)
     }
 
@@ -66,8 +78,8 @@ class ListingAdsViewController: UIViewController {
 
     private func configureTableView() {
         tableView.delegate = self
-                tableView.dataSource = self
-                tableView.register(UITableViewCell.self, forCellReuseIdentifier: "toto")
+//        tableView.dataSource = self
+        tableView.register(AdItemTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -76,6 +88,13 @@ class ListingAdsViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+
+    private func makeDataSnapshot(for items: [AdItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<TableViewSection, AdItem>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items, toSection: .main)
+        tableViewDataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -88,13 +107,13 @@ extension ListingAdsViewController: UITableViewDataSource {
         let adItem = adItems[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "toto") else {
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "toto")
-            cell.textLabel?.text = adItem.title
-            cell.detailTextLabel?.text = adItem.price.description
+            cell.textLabel?.text = adItem.price //adItem.title
+            cell.detailTextLabel?.text = adItem.price
             cell.accessoryType =  adItem.isUrgent ? .checkmark : .none
             return cell
         }
-        cell.textLabel?.text = adItem.title
-        cell.detailTextLabel?.text = adItem.price.description
+        cell.textLabel?.text = adItem.price
+        cell.detailTextLabel?.text = adItem.price
         cell.accessoryType =  adItem.isUrgent ? .checkmark : .none
         return cell
     }

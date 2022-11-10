@@ -12,6 +12,7 @@ import Domain
 enum FetchState {
     case none
     case success
+    case error
     case loading
 }
 
@@ -42,21 +43,27 @@ class ListingAdsViewModel: ListingAdsViewModeling {
 
     // MARK: ListingAdsViewModeling methods
     func fetchAds() -> AnyPublisher<Void, Never> {
-        return adsRepository.ads().map { (ads, categories) -> [AdItem] in
-            return ads.map { ad -> AdItem in
-                AdItem(identifier: ad.id,
-                       price: ad.price,
-                       isUrgent: ad.isUrgent,
-                       thumbImageURL: ad.imagesUrl?.thumb,
-                       creationDate: ad.creationDate,
-                       title: ad.title,
-                       category: categories.first(where: { $0.id == ad.categoryId })?.name ?? "Sans"
-                )
-            }.sorted(by: >)
-        }.map { [weak self] adItems -> Void in
-            self?.adsList = adItems
-            return ()
-        }.replaceError(with: ())
+        fetchState = .loading
+        return adsRepository.ads()
+            .map { (ads, categories) -> [AdItem] in
+                return ads.map { ad -> AdItem in
+                    AdItem(identifier: ad.id,
+                           creationDate: ad.creationDate,
+                           isUrgent: ad.isUrgent,
+                           thumbImageURL: ad.imagesUrl?.thumb,
+                           title: ad.title,
+                           category: categories.first(where: { $0.id == ad.categoryId })?.name ?? "Sans",
+                           price: ad.price.euros
+                    )
+                }.sorted(by: >)
+            }.map { [weak self] adItems -> Void in
+                self?.adsList = adItems
+                self?.fetchState = .success
+                return ()
+            }.catch { [weak self] _ -> Just<Void> in
+                self?.fetchState = .error
+                return Just(())
+            }
             .eraseToAnyPublisher()
     }
 
