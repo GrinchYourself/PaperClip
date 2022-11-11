@@ -58,14 +58,14 @@ class AdItemTableViewCell: UITableViewCell {
 
     let urgentSymbol: UIView = {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16.0)
-        let boltImage = UIImage(systemName: "bolt.fill", withConfiguration: configuration)
+        let boltImage = UIImage(systemName: "bookmark.fill", withConfiguration: configuration)
 
         let imageView = UIImageView(image: boltImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .systemOrange
 
         var transform = CGAffineTransform.identity
-        transform = transform.rotated(by: -.pi*3/8)
+        transform = transform.rotated(by: -.pi/4)
         imageView.transform = transform
         return imageView
     }()

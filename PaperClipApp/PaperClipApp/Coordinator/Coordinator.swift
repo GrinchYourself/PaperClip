@@ -34,9 +34,25 @@ class MainCoordinator: Coordinator {
     // MARK: Coordinator method
     func start() {
         let listingViewModel = ListingAdsViewModel(dependencies: dependencies)
-        let rootVC = ListingAdsViewController(viewModel: listingViewModel)
+        let rootVC = ListingAdsViewController(viewModel: listingViewModel, flow: self)
         rootVC.view.backgroundColor = .systemOrange
         navigationController.pushViewController(rootVC, animated: true)
+    }
+
+}
+
+extension MainCoordinator: ListingAdsFlow {
+
+    func showAdDetails(_ identifier: Int) {
+        let detailsVC = UIViewController()
+        detailsVC.view.backgroundColor = .systemOrange
+        navigationController.pushViewController(detailsVC, animated: true)
+    }
+
+    func filterAds() {
+        let filterAdsVC = UIViewController()
+        filterAdsVC.view.backgroundColor = .systemOrange
+        navigationController.present(filterAdsVC, animated: true)
     }
 
 }
