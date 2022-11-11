@@ -13,22 +13,29 @@ public class AdsRepository: AdsRepositoryProtocol {
 
     // MARK: Private properties
     private let adsRemoteStore: AdsRemoteStoreProtocol
-    private let categoriesRemoteStore: CategoriesRemoteStoreProtocol
+    private var localDds: [Ad] = []
 
     // MARK: Init
-    public init(adsRemoteStore: AdsRemoteStoreProtocol, categoriesRemoteStore: CategoriesRemoteStoreProtocol) {
+    public init(adsRemoteStore: AdsRemoteStoreProtocol) {
         self.adsRemoteStore = adsRemoteStore
-        self.categoriesRemoteStore = categoriesRemoteStore
     }
 
     // MARK: AdsRepositoryProtocol
-    public func ads() -> AnyPublisher<Domain.AggregatedAds, Domain.AdsRepositoryError> {
+    public func ads() -> AnyPublisher<[Ad], Domain.AdsRepositoryError> {
         adsRemoteStore.getAds()
+            .map { [weak self] ads -> [Ad] in
+                self?.localDds = ads
+                return ads
+            }
             .mapError(convert(_:))
-            .combineLatest(
-                categoriesRemoteStore.getCategories()
-                .mapError(convert(_:))
-            ).eraseToAnyPublisher()
+            .eraseToAnyPublisher()
+    }
+
+    public func adDetail(for identifier: Int) -> AnyPublisher<Ad, AdsRepositoryError> {
+        guard let adDetails = localDds.first(where: { $0.id == identifier }) else {
+            return Fail(error: .detailNotFound).eraseToAnyPublisher()
+        }
+        return Just(adDetails).setFailureType(to: AdsRepositoryError.self).eraseToAnyPublisher()
     }
 
     // MARK: Private methods
@@ -37,11 +44,4 @@ public class AdsRepository: AdsRepositoryProtocol {
         case .somethingWrong: return .somethingWrong
         }
     }
-
-    private func convert(_ categoriesRemoteStoreError: CategoriesRemoteStoreError) -> Domain.AdsRepositoryError {
-        switch categoriesRemoteStoreError {
-        case .somethingWrong: return .somethingWrong
-        }
-    }
-
 }

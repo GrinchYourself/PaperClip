@@ -8,10 +8,9 @@
 import Foundation
 import Combine
 
-public typealias AggregatedAds = ([Ad], [Category])
-
 public enum AdsRepositoryError: Error {
     case somethingWrong
+    case detailNotFound
 }
 
 public protocol HasAdsRepository {
@@ -19,5 +18,6 @@ public protocol HasAdsRepository {
 }
 
 public protocol AdsRepositoryProtocol {
-    func ads() -> AnyPublisher<AggregatedAds,AdsRepositoryError>
+    func ads() -> AnyPublisher<[Ad],AdsRepositoryError>
+    func adDetail(for identifier: Int) -> AnyPublisher<Ad, AdsRepositoryError>
 }

@@ -65,7 +65,7 @@ struct Mocks {
                         small: URL(string: "https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-small/ccb12e503db57eb612c6c2a986530d9a3ef34db9.jpg"),
                         thumb: URL(string: "https://raw.githubusercontent.com/leboncoin/paperclip/master/ad-thumb/ccb12e503db57eb612c6c2a986530d9a3ef34db9.jpg")),
                       price: 17.00,
-                      siret: nil),
+                      siret: "123 456 789"),
                MockAd(id: 1701863736,
                       title: "Suspension nacré peint art deco",
                       categoryId: 4,

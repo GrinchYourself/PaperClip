@@ -44,8 +44,8 @@ class MainCoordinator: Coordinator {
 extension MainCoordinator: ListingAdsFlow {
 
     func showAdDetails(_ identifier: Int) {
-        let detailsVC = UIViewController()
-        detailsVC.view.backgroundColor = .systemOrange
+        let detailsViewModel = AdDetailsViewModel(dependencies: dependencies, identifier: identifier)
+        let detailsVC = AdDetailsViewController(viewModel: detailsViewModel)
         navigationController.pushViewController(detailsVC, animated: true)
     }
 

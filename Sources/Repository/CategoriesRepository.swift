@@ -13,6 +13,7 @@ public class CategoriesRepository: CategoriesRepositoryProtocol {
 
     // MARK: Private properties
     private let categoriesRemoteStore: CategoriesRemoteStoreProtocol
+    private var localCategory: [Domain.Category] = []
 
     // MARK: Init
     public init(categoriesRemoteStore: CategoriesRemoteStoreProtocol) {
@@ -22,8 +23,19 @@ public class CategoriesRepository: CategoriesRepositoryProtocol {
     // MARK: AdsRepositoryProtocol
     public func categories() -> AnyPublisher<[Domain.Category], Domain.CategoriesRepositoryError> {
         categoriesRemoteStore.getCategories()
+            .map { [weak self] categories -> [Domain.Category] in
+                self?.localCategory = categories
+                return categories
+            }
             .mapError(convert(_:))
             .eraseToAnyPublisher()
+    }
+
+    public func category(for identifier: Int) -> AnyPublisher<Domain.Category, CategoriesRepositoryError> {
+        guard let category = localCategory.first(where: { $0.id == identifier }) else {
+            return Fail(error: .categoryNotFound).eraseToAnyPublisher()
+        }
+        return Just(category).setFailureType(to: CategoriesRepositoryError.self).eraseToAnyPublisher()
     }
 
     // MARK: Private methods

@@ -24,7 +24,11 @@ protocol ListingAdsViewModeling {
 }
 
 class ListingAdsViewModel: ListingAdsViewModeling {
-    typealias Dependencies = HasAdsRepository
+    typealias Dependencies = HasAdsRepository & HasCategoriesRepository
+
+    enum FetchError: Error{
+        case somethingWrong
+    }
 
     // MARK: ListingAdsViewModeling properties
     var adsListPublisher: Published<[AdItem]>.Publisher { $adsList }
@@ -32,19 +36,26 @@ class ListingAdsViewModel: ListingAdsViewModeling {
 
     // MARK: Private properties
     private let adsRepository: AdsRepositoryProtocol
+    private let categoriesRepository: CategoriesRepositoryProtocol
 
-    @Published var adsList: [AdItem] = []
-    @Published var fetchState: FetchState = .none
+    @Published private var adsList: [AdItem] = []
+    @Published private var fetchState: FetchState = .none
 
     // MARK: Initialization
     init(dependencies: Dependencies) {
         adsRepository = dependencies.adsRepository
+        categoriesRepository = dependencies.categoriesRepository
     }
 
     // MARK: ListingAdsViewModeling methods
     func fetchAds() -> AnyPublisher<Void, Never> {
         fetchState = .loading
         return adsRepository.ads()
+            .mapError(convert(_:))
+            .combineLatest(
+                categoriesRepository.categories()
+                    .mapError(convert(_:))
+            )
             .map { (ads, categories) -> [AdItem] in
                 return ads.map { ad -> AdItem in
                     AdItem(identifier: ad.id,
@@ -65,6 +76,14 @@ class ListingAdsViewModel: ListingAdsViewModeling {
                 return Just(())
             }
             .eraseToAnyPublisher()
+    }
+
+    private func convert(_ error: AdsRepositoryError) -> FetchError {
+        .somethingWrong
+    }
+
+    private func convert(_ error: CategoriesRepositoryError) -> FetchError {
+        .somethingWrong
     }
 
 }

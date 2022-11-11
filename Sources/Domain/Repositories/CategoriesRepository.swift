@@ -11,6 +11,7 @@ import Combine
 
 public enum CategoriesRepositoryError: Error {
     case somethingWrong
+    case categoryNotFound
 }
 
 public protocol HasCategoriesRepository {
@@ -19,4 +20,5 @@ public protocol HasCategoriesRepository {
 
 public protocol CategoriesRepositoryProtocol {
     func categories() -> AnyPublisher<[Category], CategoriesRepositoryError>
+    func category(for identifier: Int) -> AnyPublisher<Category, CategoriesRepositoryError>
 }
