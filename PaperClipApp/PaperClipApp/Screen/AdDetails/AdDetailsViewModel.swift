@@ -50,7 +50,7 @@ class AdDetailsViewModel: AdDetailsViewModeling {
                                       creationDate: ad.creationDate,
                                       price: ad.price,
                                       imageURL: ad.imagesUrl?.small,
-                                      catefory: category.name,
+                                      category: category.name,
                                       isUrgent: ad.isUrgent,
                                       siret: ad.siret)
             self?.fetchState = .success

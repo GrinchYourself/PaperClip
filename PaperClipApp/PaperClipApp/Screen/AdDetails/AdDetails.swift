@@ -13,7 +13,7 @@ struct AdDetails {
     let creationDate: Date
     let price: Double
     let imageURL: URL?
-    let catefory: String
+    let category: String
     let isUrgent: Bool
     let siret: String?
 }

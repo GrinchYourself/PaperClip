@@ -119,8 +119,6 @@ class AdItemTableViewCell: UITableViewCell {
             urgentSymbol.centerYAnchor.constraint(equalTo: itemImageView.topAnchor, constant: 12),
             urgentSymbol.centerXAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: 12)
         ])
-
-
     }
 
     // MARK: Configuration
