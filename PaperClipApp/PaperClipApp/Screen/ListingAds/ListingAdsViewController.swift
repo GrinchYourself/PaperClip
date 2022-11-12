@@ -106,6 +106,8 @@ class ListingAdsViewController: UIViewController {
     private func configureTableView() {
         tableView.delegate = self
         tableView.register(AdItemTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .label
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

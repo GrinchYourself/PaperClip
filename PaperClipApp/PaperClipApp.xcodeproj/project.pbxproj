@@ -535,6 +535,7 @@
 				DEVELOPMENT_TEAM = 48QNH69UG5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PaperClipApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PaperClip;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -565,6 +566,7 @@
 				DEVELOPMENT_TEAM = 48QNH69UG5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PaperClipApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PaperClip;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
