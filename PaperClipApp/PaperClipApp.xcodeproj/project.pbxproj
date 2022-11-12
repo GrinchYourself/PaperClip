@@ -17,6 +17,10 @@
 		AC78CE46291EB6680089BD21 /* AdDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC78CE45291EB6680089BD21 /* AdDetailsViewModelTests.swift */; };
 		AC97537D291C1AA50018A531 /* ListingAdsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC97537C291C1AA50018A531 /* ListingAdsViewModel.swift */; };
 		AC97537F291C20A70018A531 /* AdItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC97537E291C20A70018A531 /* AdItem.swift */; };
+		ACBF8552291EFDDA00FBED1A /* CategoriesFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8551291EFDDA00FBED1A /* CategoriesFilterViewController.swift */; };
+		ACBF8554291EFDE800FBED1A /* CategoriesFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */; };
+		ACBF8556291EFE0100FBED1A /* CategoryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */; };
+		ACBF8558291F119400FBED1A /* CategoriesFilterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8557291F119400FBED1A /* CategoriesFilterViewModelTests.swift */; };
 		ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = ACC1398A2917E79900BF80F0 /* RemoteStore */; };
 		ACD440B2291CF2E800FBC793 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B1291CF2E800FBC793 /* Formatters.swift */; };
 		ACD440B4291CF42600FBC793 /* ConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B3291CF42600FBC793 /* ConverterTests.swift */; };
@@ -53,6 +57,10 @@
 		AC78CE45291EB6680089BD21 /* AdDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		AC97537C291C1AA50018A531 /* ListingAdsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingAdsViewModel.swift; sourceTree = "<group>"; };
 		AC97537E291C20A70018A531 /* AdItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdItem.swift; sourceTree = "<group>"; };
+		ACBF8551291EFDDA00FBED1A /* CategoriesFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesFilterViewController.swift; sourceTree = "<group>"; };
+		ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesFilterViewModel.swift; sourceTree = "<group>"; };
+		ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilter.swift; sourceTree = "<group>"; };
+		ACBF8557291F119400FBED1A /* CategoriesFilterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesFilterViewModelTests.swift; sourceTree = "<group>"; };
 		ACD440B1291CF2E800FBC793 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		ACD440B3291CF42600FBC793 /* ConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterTests.swift; sourceTree = "<group>"; };
 		ACD440B5291CF99500FBC793 /* Double+PriceConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+PriceConverter.swift"; sourceTree = "<group>"; };
@@ -107,6 +115,7 @@
 			children = (
 				AC78CE45291EB6680089BD21 /* AdDetailsViewModelTests.swift */,
 				ACD440B9291D742900FBC793 /* ListingAdsViewModelTests.swift */,
+				ACBF8557291F119400FBED1A /* CategoriesFilterViewModelTests.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -114,8 +123,9 @@
 		AC975379291C1A3A0018A531 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
-				AC97537B291C1A600018A531 /* AdDetails */,
 				AC97537A291C1A530018A531 /* ListingAds */,
+				AC97537B291C1A600018A531 /* AdDetails */,
+				ACBF8550291EFDA100FBED1A /* CategoriesFilterSelector */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -139,6 +149,16 @@
 				AC78CE43291E7FB10089BD21 /* AdDetails.swift */,
 			);
 			path = AdDetails;
+			sourceTree = "<group>";
+		};
+		ACBF8550291EFDA100FBED1A /* CategoriesFilterSelector */ = {
+			isa = PBXGroup;
+			children = (
+				ACBF8551291EFDDA00FBED1A /* CategoriesFilterViewController.swift */,
+				ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */,
+				ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */,
+			);
+			path = CategoriesFilterSelector;
 			sourceTree = "<group>";
 		};
 		ACC139872917D21300BF80F0 /* Frameworks */ = {
@@ -326,6 +346,7 @@
 			files = (
 				ACDE0F6C2917C8AC00A0271D /* ListingAdsViewController.swift in Sources */,
 				ACD440B6291CF99500FBC793 /* Double+PriceConverter.swift in Sources */,
+				ACBF8554291EFDE800FBED1A /* CategoriesFilterViewModel.swift in Sources */,
 				AC78CE3E291D92C30089BD21 /* AdItemTableViewCell.swift in Sources */,
 				ACD440B8291D70AB00FBC793 /* Date+DateConverter.swift in Sources */,
 				AC5FBF9C29183154008CEFC7 /* URLSession+HTTPDataProvider.swift in Sources */,
@@ -333,6 +354,8 @@
 				AC97537D291C1AA50018A531 /* ListingAdsViewModel.swift in Sources */,
 				AC97537F291C20A70018A531 /* AdItem.swift in Sources */,
 				ACF0B59C291AEFEA0002D9C0 /* Coordinator.swift in Sources */,
+				ACBF8552291EFDDA00FBED1A /* CategoriesFilterViewController.swift in Sources */,
+				ACBF8556291EFE0100FBED1A /* CategoryFilter.swift in Sources */,
 				AC78CE42291E7E3F0089BD21 /* AdDetailsViewModel.swift in Sources */,
 				ACF0B59F291AF8B50002D9C0 /* Dependencies.swift in Sources */,
 				AC78CE40291E7DFA0089BD21 /* AdDetailsViewController.swift in Sources */,
@@ -345,6 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACBF8558291F119400FBED1A /* CategoriesFilterViewModelTests.swift in Sources */,
 				ACD440B4291CF42600FBC793 /* ConverterTests.swift in Sources */,
 				AC78CE46291EB6680089BD21 /* AdDetailsViewModelTests.swift in Sources */,
 				ACD440BA291D742900FBC793 /* ListingAdsViewModelTests.swift in Sources */,

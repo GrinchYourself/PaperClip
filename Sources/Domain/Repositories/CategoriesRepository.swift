@@ -21,4 +21,8 @@ public protocol HasCategoriesRepository {
 public protocol CategoriesRepositoryProtocol {
     func categories() -> AnyPublisher<[Category], CategoriesRepositoryError>
     func category(for identifier: Int) -> AnyPublisher<Category, CategoriesRepositoryError>
+    func addCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never>
+    func removeCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never>
+    func filterIds() -> AnyPublisher<[Int], Never>
+    func clearFilters() -> AnyPublisher<Bool, Never>
 }

@@ -204,6 +204,22 @@ final class AdDetailsViewModelTests: XCTestCase {
             Fail(error: CategoriesRepositoryError.somethingWrong).eraseToAnyPublisher()
         }
 
+        func addCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
+        func removeCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
+        func filterIds() -> AnyPublisher<[Int], Never> {
+            Just([]).eraseToAnyPublisher()
+        }
+
+        func clearFilters() -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
     }
 
 }

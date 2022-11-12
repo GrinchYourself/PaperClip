@@ -152,6 +152,89 @@ final class CategoriesRepositoryTests: XCTestCase {
         wait(for: [getCategoryExpectation], timeout: 0.5)
     }
 
+    // MARK: Filters management
+    func testAddFilters() {
+        let categoriesRemoteStoreDependency = MockCategoriesRemoteStore(isSucceeded: true)
+        let categoriesRepository = CategoriesRepository(categoriesRemoteStore: categoriesRemoteStoreDependency)
+
+        //Add
+        let addExpectation = XCTestExpectation(description: "Add Filter Ids")
+        addExpectation.expectedFulfillmentCount = 3
+        var count = 0
+        categoriesRepository.filterIds().sink { ids in
+            if count == 0 {
+                XCTAssertEqual(0, ids.count)
+                addExpectation.fulfill()
+            } else {
+                XCTAssertEqual(4, ids.count)
+                XCTAssertTrue(ids.contains(1))
+                XCTAssertTrue(ids.contains(3))
+                XCTAssertTrue(ids.contains(6))
+                XCTAssertTrue(ids.contains(8))
+                addExpectation.fulfill()
+            }
+            count += 1
+        }.store(in: &cancellables)
+
+        categoriesRepository.addCategoryAsFilter([1, 6, 3, 8])
+            .sink { success in
+                XCTAssertTrue(success)
+                addExpectation.fulfill()
+            }.store(in: &cancellables)
+        wait(for: [addExpectation], timeout: 0.2)
+    }
+
+    func testRemoveFilters() {
+        let categoriesRemoteStoreDependency = MockCategoriesRemoteStore(isSucceeded: true)
+        let categoriesRepository = CategoriesRepository(categoriesRemoteStore: categoriesRemoteStoreDependency)
+
+        let _ = categoriesRepository.addCategoryAsFilter([1, 6, 3, 8]).sink(receiveValue: { _ in })
+        //Remove
+        let removeExpectation = XCTestExpectation(description: "Remove Filter Ids")
+        removeExpectation.expectedFulfillmentCount = 2
+        categoriesRepository.filterIds()
+            .dropFirst() // Do not want to check the actual ids
+            .sink { ids in
+                XCTAssertEqual(2, ids.count)
+                XCTAssertTrue(ids.contains(8))
+                XCTAssertTrue(ids.contains(6))
+                removeExpectation.fulfill()
+        }.store(in: &cancellables)
+
+        categoriesRepository.removeCategoryAsFilter([1, 3])
+            .sink { success in
+                XCTAssertTrue(success)
+                removeExpectation.fulfill()
+            }.store(in: &cancellables)
+        wait(for: [removeExpectation], timeout: 0.2)
+
+    }
+
+    func testClearFilters() {
+        let categoriesRemoteStoreDependency = MockCategoriesRemoteStore(isSucceeded: true)
+        let categoriesRepository = CategoriesRepository(categoriesRemoteStore: categoriesRemoteStoreDependency)
+
+        let _ = categoriesRepository.addCategoryAsFilter([1, 6, 3, 8]).sink(receiveValue: { _ in })
+        //Clear
+        let clearExpectation = XCTestExpectation(description: "Clear Filter Ids")
+        clearExpectation.expectedFulfillmentCount = 2
+        categoriesRepository.filterIds()
+            .dropFirst() // Do not want to check the actual ids
+            .sink { ids in
+                XCTAssertEqual(0, ids.count)
+                clearExpectation.fulfill()
+        }.store(in: &cancellables)
+
+        categoriesRepository.clearFilters()
+            .sink { success in
+                XCTAssertTrue(success)
+                clearExpectation.fulfill()
+            }.store(in: &cancellables)
+        wait(for: [clearExpectation], timeout: 0.2)
+
+    }
+
+
     // MARK: Mock
     class MockCategoriesRemoteStore: Domain.CategoriesRemoteStoreProtocol {
 

@@ -211,5 +211,21 @@ final class ListingAdsViewModelTests: XCTestCase {
             Fail(error: .categoryNotFound).eraseToAnyPublisher()
         }
 
+        func addCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
+        func removeCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
+        func filterIds() -> AnyPublisher<[Int], Never> {
+            Just([]).eraseToAnyPublisher()
+        }
+
+        func clearFilters() -> AnyPublisher<Bool, Never> {
+            Just(true).eraseToAnyPublisher()
+        }
+
     }
 }

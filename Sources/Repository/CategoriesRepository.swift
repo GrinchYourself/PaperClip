@@ -14,6 +14,7 @@ public class CategoriesRepository: CategoriesRepositoryProtocol {
     // MARK: Private properties
     private let categoriesRemoteStore: CategoriesRemoteStoreProtocol
     private var localCategory: [Domain.Category] = []
+    private let localFiltersSubject = CurrentValueSubject<[Int], Never>([])
 
     // MARK: Init
     public init(categoriesRemoteStore: CategoriesRemoteStoreProtocol) {
@@ -36,6 +37,30 @@ public class CategoriesRepository: CategoriesRepositoryProtocol {
             return Fail(error: .categoryNotFound).eraseToAnyPublisher()
         }
         return Just(category).setFailureType(to: CategoriesRepositoryError.self).eraseToAnyPublisher()
+    }
+
+    public func addCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+        var localFilters = localFiltersSubject.value
+        let idsToAdd = ids.filter{ !localFilters.contains($0) }
+        localFilters.append(contentsOf: idsToAdd)
+        localFiltersSubject.send(localFilters)
+        return Just(true).eraseToAnyPublisher()
+    }
+
+    public func removeCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
+        let localFilters = localFiltersSubject.value
+        let idsToKeep = localFilters.filter{ !ids.contains($0) }
+        localFiltersSubject.send(idsToKeep)
+        return Just(true).eraseToAnyPublisher()
+    }
+
+    public func clearFilters() -> AnyPublisher<Bool, Never> {
+        localFiltersSubject.send([])
+        return Just(true).eraseToAnyPublisher()
+    }
+
+    public func filterIds() -> AnyPublisher<[Int], Never> {
+        localFiltersSubject.eraseToAnyPublisher()
     }
 
     // MARK: Private methods
