@@ -50,9 +50,11 @@ extension MainCoordinator: ListingAdsFlow {
     }
 
     func filterAds() {
-        let filterAdsVC = UIViewController()
-        filterAdsVC.view.backgroundColor = .systemOrange
-        navigationController.present(filterAdsVC, animated: true)
+        let filtersViewModel = CategoriesFilterViewModel(dependencies: dependencies)
+        let filtersVC = CategoriesFilterViewController(viewModel: filtersViewModel)
+        let navigationVC = UINavigationController(rootViewController: filtersVC)
+
+        navigationController.present(navigationVC, animated: true)
     }
 
 }

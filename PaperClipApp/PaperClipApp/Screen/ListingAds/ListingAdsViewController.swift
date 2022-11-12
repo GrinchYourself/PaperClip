@@ -149,8 +149,7 @@ extension ListingAdsViewController {
 extension ListingAdsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let snapshot = tableViewDataSource.snapshot()
-        let itemIdentifier = snapshot.itemIdentifiers(inSection: .main)[indexPath.row].identifier
+        guard let itemIdentifier = tableViewDataSource.itemIdentifier(for: indexPath)?.identifier else { return }
         flow?.showAdDetails(itemIdentifier)
     }
 }

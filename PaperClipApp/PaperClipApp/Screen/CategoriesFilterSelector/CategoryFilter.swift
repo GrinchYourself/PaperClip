@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-struct CategoryFilter {
+struct CategoryFilter: Hashable {
     let identifier: Int
     let name: String
     let isSelected: Bool

@@ -21,6 +21,8 @@
 		ACBF8554291EFDE800FBED1A /* CategoriesFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */; };
 		ACBF8556291EFE0100FBED1A /* CategoryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */; };
 		ACBF8558291F119400FBED1A /* CategoriesFilterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8557291F119400FBED1A /* CategoriesFilterViewModelTests.swift */; };
+		ACBF855A291F9EDF00FBED1A /* FilterCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8559291F9EDF00FBED1A /* FilterCategoryCollectionViewCell.swift */; };
+		ACBF855C291FAAC000FBED1A /* CategoryPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF855B291FAAC000FBED1A /* CategoryPill.swift */; };
 		ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = ACC1398A2917E79900BF80F0 /* RemoteStore */; };
 		ACD440B2291CF2E800FBC793 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B1291CF2E800FBC793 /* Formatters.swift */; };
 		ACD440B4291CF42600FBC793 /* ConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B3291CF42600FBC793 /* ConverterTests.swift */; };
@@ -61,6 +63,8 @@
 		ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesFilterViewModel.swift; sourceTree = "<group>"; };
 		ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilter.swift; sourceTree = "<group>"; };
 		ACBF8557291F119400FBED1A /* CategoriesFilterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesFilterViewModelTests.swift; sourceTree = "<group>"; };
+		ACBF8559291F9EDF00FBED1A /* FilterCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		ACBF855B291FAAC000FBED1A /* CategoryPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPill.swift; sourceTree = "<group>"; };
 		ACD440B1291CF2E800FBC793 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		ACD440B3291CF42600FBC793 /* ConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterTests.swift; sourceTree = "<group>"; };
 		ACD440B5291CF99500FBC793 /* Double+PriceConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+PriceConverter.swift"; sourceTree = "<group>"; };
@@ -154,9 +158,11 @@
 		ACBF8550291EFDA100FBED1A /* CategoriesFilterSelector */ = {
 			isa = PBXGroup;
 			children = (
-				ACBF8551291EFDDA00FBED1A /* CategoriesFilterViewController.swift */,
 				ACBF8553291EFDE800FBED1A /* CategoriesFilterViewModel.swift */,
+				ACBF8551291EFDDA00FBED1A /* CategoriesFilterViewController.swift */,
 				ACBF8555291EFE0100FBED1A /* CategoryFilter.swift */,
+				ACBF8559291F9EDF00FBED1A /* FilterCategoryCollectionViewCell.swift */,
+				ACBF855B291FAAC000FBED1A /* CategoryPill.swift */,
 			);
 			path = CategoriesFilterSelector;
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACBF855A291F9EDF00FBED1A /* FilterCategoryCollectionViewCell.swift in Sources */,
 				ACDE0F6C2917C8AC00A0271D /* ListingAdsViewController.swift in Sources */,
 				ACD440B6291CF99500FBC793 /* Double+PriceConverter.swift in Sources */,
 				ACBF8554291EFDE800FBED1A /* CategoriesFilterViewModel.swift in Sources */,
@@ -357,6 +364,7 @@
 				ACBF8552291EFDDA00FBED1A /* CategoriesFilterViewController.swift in Sources */,
 				ACBF8556291EFE0100FBED1A /* CategoryFilter.swift in Sources */,
 				AC78CE42291E7E3F0089BD21 /* AdDetailsViewModel.swift in Sources */,
+				ACBF855C291FAAC000FBED1A /* CategoryPill.swift in Sources */,
 				ACF0B59F291AF8B50002D9C0 /* Dependencies.swift in Sources */,
 				AC78CE40291E7DFA0089BD21 /* AdDetailsViewController.swift in Sources */,
 				ACDE0F682917C8AC00A0271D /* AppDelegate.swift in Sources */,
