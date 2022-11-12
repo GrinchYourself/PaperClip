@@ -52,7 +52,7 @@ extension MainCoordinator: ListingAdsFlow {
     func filterAds() {
         let filtersViewModel = CategoriesFilterViewModel(dependencies: dependencies)
         let filtersVC = CategoriesFilterViewController(viewModel: filtersViewModel)
-        let navigationVC = UINavigationController(rootViewController: filtersVC)
+        let navigationVC = MainNavigationController(rootViewController: filtersVC)
 
         navigationController.present(navigationVC, animated: true)
     }

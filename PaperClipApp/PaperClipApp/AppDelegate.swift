@@ -17,7 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        let navigationVC = UINavigationController()
+        let appearance = Appearance().navigationAppearance
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        
+        let navigationVC = MainNavigationController()
         let mainCoordinator = MainCoordinator(dependencies: MainDependencies(),
                                               navigationController: navigationVC)
 
