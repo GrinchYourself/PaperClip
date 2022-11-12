@@ -47,8 +47,7 @@ final class AdDetailsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.success, fetchState)
+            case 1: XCTAssertEqual(.success, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -75,8 +74,7 @@ final class AdDetailsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -103,8 +101,7 @@ final class AdDetailsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -131,8 +128,7 @@ final class AdDetailsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1

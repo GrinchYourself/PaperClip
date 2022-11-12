@@ -76,7 +76,7 @@ class CategoriesFilterViewController: UIViewController {
     // MARK: Self
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .secondarySystemBackground
         registerHandlers()
 
         configureCollectionView()
@@ -92,7 +92,7 @@ class CategoriesFilterViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

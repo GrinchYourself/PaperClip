@@ -34,7 +34,7 @@ class ListingAdsViewController: UIViewController {
         return buttonItem
     }()
 
-    private var tableView = UITableView(frame: CGRect.zero, style: .grouped)
+    private var tableView = UITableView(frame: CGRect.zero, style: .plain)
 
     private lazy var tableViewDataSource: UITableViewDiffableDataSource< TableViewSection, AdItem> = {
         UITableViewDiffableDataSource<TableViewSection, AdItem>.init(tableView: tableView) {
@@ -77,11 +77,6 @@ class ListingAdsViewController: UIViewController {
         fetchItems()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        fetchItems()
-    }
-
     // MARK: Private methods
     private func registerHandlers() {
         viewModel.adsListPublisher
@@ -96,16 +91,16 @@ class ListingAdsViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 switch state {
-                case .none: return
-                case .loading: print("displayLoader")
-                case .success: print("removeLoader")
                 case .error: self?.showError()
+                default: break
                 }
             }.store(in: &subscriptions)
     }
 
     private func fetchItems() {
-        fetchCancellable = viewModel.fetchAds().sink { [weak self] _ in self?.fetchCancellable = nil }
+        viewModel.fetchAds()
+            .sink { _ in }
+            .store(in: &subscriptions)
     }
 
     private func configureTableView() {
@@ -152,4 +147,5 @@ extension ListingAdsViewController: UITableViewDelegate {
         guard let itemIdentifier = tableViewDataSource.itemIdentifier(for: indexPath)?.identifier else { return }
         flow?.showAdDetails(itemIdentifier)
     }
+
 }

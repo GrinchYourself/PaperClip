@@ -43,7 +43,6 @@ class AdDetailsViewModel: AdDetailsViewModeling {
 
     //MARK: Public methods
     func fetchDetails() -> AnyPublisher<Void, Never> {
-        fetchState = .loading
         return getDetails().map { [weak self] (ad, category) -> Void in
             self?.details = AdDetails(title: ad.title,
                                       description: ad.description,

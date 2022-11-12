@@ -56,8 +56,7 @@ final class ListingAdsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.success, fetchState)
+            case 1: XCTAssertEqual(.success, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -84,8 +83,7 @@ final class ListingAdsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -112,8 +110,7 @@ final class ListingAdsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -140,8 +137,7 @@ final class ListingAdsViewModelTests: XCTestCase {
         viewModel.fetchStatePublisher.sink { fetchState in
             switch stateChangesCount {
             case 0: XCTAssertEqual(.none, fetchState)
-            case 1: XCTAssertEqual(.loading, fetchState)
-            case 2: XCTAssertEqual(.error, fetchState)
+            case 1: XCTAssertEqual(.error, fetchState)
             default: XCTFail("Not expected")
             }
             stateChangesCount += 1
@@ -153,14 +149,97 @@ final class ListingAdsViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 0.2)
     }
 
+    func testFetchAdsAfterFiltersSelection() {
+        let dependencies = MockDependencies(isAdsSuccess: true, isCategoriesSuccess: true)
+        let viewModel: ListingAdsViewModeling = ListingAdsViewModel(dependencies: dependencies)
+
+        let expectationFetch = XCTestExpectation(description: "Get fetch Success")
+        expectationFetch.expectedFulfillmentCount = 4
+
+        let expectationAddFilters = XCTestExpectation(description: "Ad Filters Success")
+        expectationAddFilters.expectedFulfillmentCount = 3
+
+        let expectationRemoveFilters = XCTestExpectation(description: "Remove Filters Success")
+        expectationRemoveFilters.expectedFulfillmentCount = 3
+
+        var adsCount = 0
+        viewModel.adsListPublisher
+            .dropFirst() // Drop initial empty state
+            .sink { adItems in
+                switch adsCount {
+                case 0:
+                    XCTAssertEqual(6, adItems.count)
+                    expectationFetch.fulfill()
+                case 1:
+                    XCTAssertEqual(4, adItems.count)
+                    expectationAddFilters.fulfill()
+                case 2:
+                    XCTAssertEqual(3, adItems.count)
+                    expectationRemoveFilters.fulfill()
+                default: XCTFail("Not expected")
+                }
+                adsCount += 1
+            }.store(in: &cancellables)
+
+        var stateChangesCount = 0
+        viewModel.fetchStatePublisher.sink { fetchState in
+            switch stateChangesCount {
+            case 0: XCTAssertEqual(.none, fetchState)
+                expectationFetch.fulfill()
+            case 1:
+                XCTAssertEqual(.success, fetchState)
+                expectationFetch.fulfill()
+            case 2:
+                XCTAssertEqual(.success, fetchState)
+                expectationAddFilters.fulfill()
+            case 3:
+                XCTAssertEqual(.success, fetchState)
+                expectationRemoveFilters.fulfill()
+            default: XCTFail("Not expected")
+            }
+            stateChangesCount += 1
+        }.store(in: &cancellables)
+
+        var fetchCount = 0
+        viewModel.fetchAds().sink { _ in
+            switch fetchCount {
+            case 0:
+                expectationFetch.fulfill()
+            case 1:
+                expectationAddFilters.fulfill()
+            case 2:
+                expectationRemoveFilters.fulfill()
+            default: XCTFail("Not expected")
+            }
+            fetchCount += 1
+        }.store(in: &cancellables)
+        wait(for: [expectationFetch], timeout: 0.2)
+
+        dependencies.filtersChanged(with: [4, 6])
+        wait(for: [expectationAddFilters], timeout: 0.2)
+
+        dependencies.filtersChanged(with: [4])
+        wait(for: [expectationRemoveFilters], timeout: 0.2)
+
+    }
+
+    // MARK: Mock
     struct MockDependencies: ListingAdsViewModel.Dependencies {
         let adsRepository: Domain.AdsRepositoryProtocol
-        let categoriesRepository: CategoriesRepositoryProtocol
+        let categoriesRepository: Domain.CategoriesRepositoryProtocol
+
+        let mockCategoriesRepository: MockCategoriesRepository
 
         init(isAdsSuccess: Bool, isCategoriesSuccess: Bool) {
             self.adsRepository = MockAdsRepository(isSuccess: isAdsSuccess)
-            self.categoriesRepository = MockCategoriesRepository(isSuccess: isCategoriesSuccess)
+            self.mockCategoriesRepository = MockCategoriesRepository(isSuccess: isCategoriesSuccess)
+            self.categoriesRepository = mockCategoriesRepository
         }
+
+        func filtersChanged(with ids: [Int]) {
+            mockCategoriesRepository.filterIdsSubject.send(ids)
+        }
+
     }
 
     struct MockAdsRepository: AdsRepositoryProtocol {
@@ -192,6 +271,7 @@ final class ListingAdsViewModelTests: XCTestCase {
 
         let isSuccess: Bool
         let mocks = Mocks()
+        let filterIdsSubject = CurrentValueSubject<[Int], Never>([])
 
         init(isSuccess: Bool) {
             self.isSuccess = isSuccess
@@ -206,6 +286,10 @@ final class ListingAdsViewModelTests: XCTestCase {
             }
         }
 
+        func filterIds() -> AnyPublisher<[Int], Never> {
+            filterIdsSubject.eraseToAnyPublisher()
+        }
+
         // Not used
         func category(for identifier: Int) -> AnyPublisher<Domain.Category, Domain.CategoriesRepositoryError> {
             Fail(error: .categoryNotFound).eraseToAnyPublisher()
@@ -217,10 +301,6 @@ final class ListingAdsViewModelTests: XCTestCase {
 
         func removeCategoryAsFilter(_ ids: [Int]) -> AnyPublisher<Bool, Never> {
             Just(true).eraseToAnyPublisher()
-        }
-
-        func filterIds() -> AnyPublisher<[Int], Never> {
-            Just([]).eraseToAnyPublisher()
         }
 
         func clearFilters() -> AnyPublisher<Bool, Never> {

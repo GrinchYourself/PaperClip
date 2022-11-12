@@ -13,7 +13,6 @@ enum FetchState {
     case none
     case success
     case error
-    case loading
 }
 
 protocol ListingAdsViewModeling {
@@ -26,7 +25,7 @@ protocol ListingAdsViewModeling {
 class ListingAdsViewModel: ListingAdsViewModeling {
     typealias Dependencies = HasAdsRepository & HasCategoriesRepository
 
-    enum FetchError: Error{
+    enum FetchError: Error {
         case somethingWrong
     }
 
@@ -40,6 +39,7 @@ class ListingAdsViewModel: ListingAdsViewModeling {
 
     @Published private var adsList: [AdItem] = []
     @Published private var fetchState: FetchState = .none
+    private var filterIdsSubscription: AnyCancellable?
 
     // MARK: Initialization
     init(dependencies: Dependencies) {
@@ -49,13 +49,10 @@ class ListingAdsViewModel: ListingAdsViewModeling {
 
     // MARK: ListingAdsViewModeling methods
     func fetchAds() -> AnyPublisher<Void, Never> {
-        fetchState = .loading
-        return adsRepository.ads()
-            .mapError(convert(_:))
-            .combineLatest(
-                categoriesRepository.categories()
-                    .mapError(convert(_:))
-            )
+        let categoriesPublisher = categoriesRepository.categories()
+            .mapError(convert(_:)).eraseToAnyPublisher()
+        return fetchAndFilterIfNeeded()
+            .combineLatest(categoriesPublisher)
             .map { (ads, categories) -> [AdItem] in
                 return ads.map { ad -> AdItem in
                     AdItem(identifier: ad.id,
@@ -76,6 +73,21 @@ class ListingAdsViewModel: ListingAdsViewModeling {
                 return Just(())
             }
             .eraseToAnyPublisher()
+    }
+
+    // MARK: Private methods
+
+    private func fetchAndFilterIfNeeded() -> AnyPublisher<[Ad], FetchError> {
+        let fetchPublisher = adsRepository.ads().mapError(convert(_:)).eraseToAnyPublisher()
+        let filterIdsPublisher = categoriesRepository.filterIds().setFailureType(to: FetchError.self).eraseToAnyPublisher()
+        return fetchPublisher
+            .combineLatest(filterIdsPublisher)
+            .map { (ads, filterIds) -> [Ad] in
+                guard !filterIds.isEmpty else {
+                    return ads
+                }
+                return ads.filter { filterIds.contains($0.categoryId) }
+            }.eraseToAnyPublisher()
     }
 
     private func convert(_ error: AdsRepositoryError) -> FetchError {

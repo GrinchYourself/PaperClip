@@ -116,16 +116,15 @@ class AdDetailsViewController: UIViewController {
         registerHandlers()
 
         applyConstraints()
-    }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         fetchDetails()
     }
 
     //MARK: Private methods
     private func fetchDetails() {
-        fetchCancellable = viewModel.fetchDetails().sink { [weak self] _ in self?.fetchCancellable = nil }
+        viewModel.fetchDetails()
+            .sink { _ in }
+            .store(in: &subscriptions)
     }
 
     private func registerHandlers() {

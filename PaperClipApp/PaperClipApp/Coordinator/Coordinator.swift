@@ -35,7 +35,6 @@ class MainCoordinator: Coordinator {
     func start() {
         let listingViewModel = ListingAdsViewModel(dependencies: dependencies)
         let rootVC = ListingAdsViewController(viewModel: listingViewModel, flow: self)
-        rootVC.view.backgroundColor = .systemOrange
         navigationController.pushViewController(rootVC, animated: true)
     }
 
