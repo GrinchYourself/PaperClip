@@ -26,6 +26,7 @@
 		ACBF855E291FE72500FBED1A /* NavigationControllerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF855D291FE72500FBED1A /* NavigationControllerAppearance.swift */; };
 		ACBF85602920FFD800FBED1A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF855F2920FFD800FBED1A /* ImageLoader.swift */; };
 		ACBF8563292139C200FBED1A /* UrgentSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF8562292139C200FBED1A /* UrgentSymbol.swift */; };
+		ACBF856529217FD200FBED1A /* ProInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBF856429217FD200FBED1A /* ProInformation.swift */; };
 		ACC1398B2917E79900BF80F0 /* RemoteStore in Frameworks */ = {isa = PBXBuildFile; productRef = ACC1398A2917E79900BF80F0 /* RemoteStore */; };
 		ACD440B2291CF2E800FBC793 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B1291CF2E800FBC793 /* Formatters.swift */; };
 		ACD440B4291CF42600FBC793 /* ConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD440B3291CF42600FBC793 /* ConverterTests.swift */; };
@@ -71,6 +72,7 @@
 		ACBF855D291FE72500FBED1A /* NavigationControllerAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerAppearance.swift; sourceTree = "<group>"; };
 		ACBF855F2920FFD800FBED1A /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		ACBF8562292139C200FBED1A /* UrgentSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrgentSymbol.swift; sourceTree = "<group>"; };
+		ACBF856429217FD200FBED1A /* ProInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProInformation.swift; sourceTree = "<group>"; };
 		ACD440B1291CF2E800FBC793 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		ACD440B3291CF42600FBC793 /* ConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterTests.swift; sourceTree = "<group>"; };
 		ACD440B5291CF99500FBC793 /* Double+PriceConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+PriceConverter.swift"; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			children = (
 				ACBF855B291FAAC000FBED1A /* CategoryPill.swift */,
 				ACBF8562292139C200FBED1A /* UrgentSymbol.swift */,
+				ACBF856429217FD200FBED1A /* ProInformation.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				ACBF8554291EFDE800FBED1A /* CategoriesFilterViewModel.swift in Sources */,
 				AC78CE3E291D92C30089BD21 /* AdItemTableViewCell.swift in Sources */,
 				ACD440B8291D70AB00FBC793 /* Date+DateConverter.swift in Sources */,
+				ACBF856529217FD200FBED1A /* ProInformation.swift in Sources */,
 				AC5FBF9C29183154008CEFC7 /* URLSession+HTTPDataProvider.swift in Sources */,
 				ACD440B2291CF2E800FBC793 /* Formatters.swift in Sources */,
 				AC97537D291C1AA50018A531 /* ListingAdsViewModel.swift in Sources */,

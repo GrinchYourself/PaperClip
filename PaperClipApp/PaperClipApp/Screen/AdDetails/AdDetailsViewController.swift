@@ -56,6 +56,12 @@ class AdDetailsViewController: UIViewController {
         return pill
     }()
 
+    let proInformation: ProInformation = {
+        let information = ProInformation(frame: CGRect.zero)
+        information.translatesAutoresizingMaskIntoConstraints = false
+        return information
+    }()
+
     let priceLabel: UILabel = {
         let label = UILabel(frame: CGRect.zero)
         label.font = UIFont.preferredFont(forTextStyle: .headline)
@@ -128,14 +134,20 @@ class AdDetailsViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] details in
                 guard let details else { return }
-                self?.loadImage(url: details.imageURL)
-                self?.titleLabel.text = details.title
-                self?.priceLabel.text = details.price.euros
-                self?.dateLabel.text = "Posté le \(details.creationDate.short ?? "")"
-                self?.categoryPill.configure(with: details.category, and: false)
-                self?.urgentSymbol.isHidden = !(details.isUrgent)
-                self?.descriptionLabel.text = details.description
+                self?.updateInformations(details)
             }.store(in: &subscriptions)
+    }
+
+    private func updateInformations(_ details: AdDetails) {
+        loadImage(url: details.imageURL)
+        titleLabel.text = details.title
+        priceLabel.text = details.price.euros
+        dateLabel.text = "Posté le \(details.creationDate.short ?? "")"
+        categoryPill.configure(with: details.category, and: false)
+        urgentSymbol.isHidden = !(details.isUrgent)
+        descriptionLabel.text = details.description
+        proInformation.isHidden = details.siret == nil
+        proInformation.configure(with: details.siret)
     }
 
     private func loadImage(url: URL?) {
@@ -159,6 +171,7 @@ class AdDetailsViewController: UIViewController {
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
         contentView.addSubview(categoryPill)
+        contentView.addSubview(proInformation)
         contentView.addSubview(dateLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(urgentSymbol)
@@ -183,6 +196,9 @@ class AdDetailsViewController: UIViewController {
             //Category
             categoryPill.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
             categoryPill.topAnchor.constraint(equalTo: itemImageView.bottomAnchor, constant: K.spacing),
+            //Pro information
+            proInformation.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
+            proInformation.centerYAnchor.constraint(equalTo: categoryPill.centerYAnchor),
             //Title
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
             titleLabel.topAnchor.constraint(equalTo: categoryPill.bottomAnchor, constant: K.spacing),
