@@ -25,7 +25,7 @@ class ListingAdsViewController: UIViewController {
     }
 
     // MARK: UI
-    lazy var filterItem: UIBarButtonItem = {
+    private lazy var filterItem: UIBarButtonItem = {
         let buttonItem = UIBarButtonItem(title: nil,
                                          style: .plain,
                                          target: self,
@@ -35,6 +35,7 @@ class ListingAdsViewController: UIViewController {
     }()
 
     private var tableView = UITableView(frame: CGRect.zero, style: .plain)
+    private var leadingConstraint = NSLayoutConstraint()
 
     private lazy var tableViewDataSource: UITableViewDiffableDataSource< TableViewSection, AdItem> = {
         UITableViewDiffableDataSource<TableViewSection, AdItem>.init(tableView: tableView) {
@@ -68,7 +69,7 @@ class ListingAdsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "PaperClip"
-        view.backgroundColor = .quaternarySystemFill
+        view.backgroundColor = .systemGray5
 
         registerHandlers()
 
@@ -76,6 +77,16 @@ class ListingAdsViewController: UIViewController {
         configureBarItem()
 
         fetchItems()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateLeadingConstraint()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateLeadingConstraint()
     }
 
     // MARK: Private methods
@@ -112,10 +123,12 @@ class ListingAdsViewController: UIViewController {
         tableView.separatorColor = .label
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        leadingConstraint = tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            leadingConstraint,
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
@@ -134,6 +147,16 @@ class ListingAdsViewController: UIViewController {
     @objc private func filterButtonPressed() {
         flow?.filterAds()
     }
+
+    private func updateLeadingConstraint() {
+        let isLandscape = UIDevice.current.orientation.isValidInterfaceOrientation ? UIDevice.current.orientation.isLandscape : UIApplication.isLandscape
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let isSplit = UIApplication.shared.isSplitOrSlideOver
+        let horizontalConstant = (isLandscape && isIpad && !isSplit) ? (UIScreen.main.bounds.width - UIScreen.main.bounds.height) / 2 : 0
+
+        leadingConstraint.constant = horizontalConstant
+    }
+
 }
 
 // MARK: error management

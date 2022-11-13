@@ -93,6 +93,8 @@ class AdDetailsViewController: UIViewController {
         return label
     }()
 
+    private var leadingConstraint = NSLayoutConstraint()
+
     // MARK: Private properties
     private let viewModel: AdDetailsViewModeling
     private let imageLoader: ImageLoading = ImageLoader.loader
@@ -119,6 +121,16 @@ class AdDetailsViewController: UIViewController {
         applyConstraints()
 
         fetchDetails()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateLeadingConstraint()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateLeadingConstraint()
     }
 
     //MARK: Private methods
@@ -176,17 +188,18 @@ class AdDetailsViewController: UIViewController {
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(urgentSymbol)
 
+        leadingConstraint = scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         NSLayoutConstraint.activate([
             //ScrollView
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            leadingConstraint,
             //ContentView
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             //ImageView
             itemImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
@@ -220,4 +233,12 @@ class AdDetailsViewController: UIViewController {
         ])
     }
 
+    private func updateLeadingConstraint() {
+        let isLandscape = UIDevice.current.orientation.isValidInterfaceOrientation ? UIDevice.current.orientation.isLandscape : UIApplication.isLandscape
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let isSplit = UIApplication.shared.isSplitOrSlideOver
+        let horizontalConstant = (isLandscape && isIpad && !isSplit) ? (UIScreen.main.bounds.width - UIScreen.main.bounds.height) / 2 : 0
+
+        leadingConstraint.constant = horizontalConstant
+    }
 }
