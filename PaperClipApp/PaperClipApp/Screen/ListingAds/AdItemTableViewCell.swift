@@ -7,6 +7,7 @@
 
 import UIKit
 import Domain
+import Combine
 
 class AdItemTableViewCell: UITableViewCell {
 
@@ -14,11 +15,16 @@ class AdItemTableViewCell: UITableViewCell {
         static let spacing = 8.0
         static let imageSize = 100.0
         static let betweenElement = 16.0
+        static let symbolSize = UrgentSymbol.K.symbolSize
+        static let cornerRadius = 5.0
     }
 
     let itemImageView: UIImageView = {
-        var imageView = UIImageView(frame: CGRect.zero)
-        imageView.contentMode = .center
+        var imageView = UIImageView(image: UIImage(systemName: "photo"))
+        imageView.tintColor = .systemGray5
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = K.cornerRadius
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -28,16 +34,14 @@ class AdItemTableViewCell: UITableViewCell {
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         return label
     }()
 
-    let categoryLabel: UILabel = {
-        let label = UILabel(frame: CGRect.zero)
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    let categoryPill: CategoryPill = {
+        let pill = CategoryPill(frame: CGRect.zero)
+        pill.translatesAutoresizingMaskIntoConstraints = false
+        return pill
     }()
 
     let priceLabel: UILabel = {
@@ -56,22 +60,19 @@ class AdItemTableViewCell: UITableViewCell {
         return label
     }()
 
-    let urgentSymbol: UIView = {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 16.0)
-        let boltImage = UIImage(systemName: "bookmark.fill", withConfiguration: configuration)
-
-        let imageView = UIImageView(image: boltImage)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .systemOrange
-
-        var transform = CGAffineTransform.identity
-        transform = transform.rotated(by: -.pi/4)
-        imageView.transform = transform
-        return imageView
+    let urgentSymbol: UrgentSymbol = {
+        let symbol = UrgentSymbol(frame: CGRect.zero)
+        symbol.translatesAutoresizingMaskIntoConstraints = false
+        return symbol
     }()
 
+    private let imageLoader: ImageLoading = ImageLoader.loader
+    private var imageLoadingCancellable: AnyCancellable?
+
+    // MARK: Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = .secondarySystemFill
         applyConstraints()
     }
 
@@ -79,54 +80,77 @@ class AdItemTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Self
+    override func prepareForReuse() {
+        imageLoadingCancellable?.cancel()
+        imageLoadingCancellable  = nil
+        itemImageView.image = UIImage(systemName: "photo")
+        titleLabel.text = ""
+        priceLabel.text = ""
+        categoryPill.configure(with: "", and: false)
+        dateLabel.text = ""
+        urgentSymbol.isHidden = true
+    }
+
     // MARK: private methods
     private func applyConstraints() {
         contentView.addSubview(itemImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
-        contentView.addSubview(categoryLabel)
+        contentView.addSubview(categoryPill)
         contentView.addSubview(dateLabel)
         contentView.addSubview(urgentSymbol)
 
-        let imageHeightConstraint = itemImageView.heightAnchor.constraint(equalTo: itemImageView.widthAnchor)
-        imageHeightConstraint.priority = .defaultHigh - 1
         NSLayoutConstraint.activate([
             //ImageView
             itemImageView.widthAnchor.constraint(equalToConstant: K.imageSize),
-            imageHeightConstraint,
+            itemImageView.heightAnchor.constraint(equalToConstant: K.imageSize),
             itemImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
             itemImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.spacing),
             itemImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.spacing),
             //Category
-            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
-            categoryLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.spacing),
+            categoryPill.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
+            categoryPill.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.spacing),
             //Title
             titleLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: K.betweenElement),
-            titleLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: K.spacing),
+            titleLabel.topAnchor.constraint(equalTo: categoryPill.bottomAnchor, constant: K.spacing),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: priceLabel.topAnchor, constant: -K.betweenElement),
             //Price
             priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: itemImageView.bottomAnchor),
-            priceLabel.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 16),
+            priceLabel.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: K.betweenElement),
             //Date
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
             dateLabel.firstBaselineAnchor.constraint(equalTo: priceLabel.lastBaselineAnchor),
-            dateLabel.topAnchor.constraint(greaterThanOrEqualTo: categoryLabel.bottomAnchor),
+            dateLabel.topAnchor.constraint(greaterThanOrEqualTo: categoryPill.bottomAnchor),
             //UrgentSymbol
-            urgentSymbol.widthAnchor.constraint(equalToConstant: 24),
-            urgentSymbol.heightAnchor.constraint(equalTo: urgentSymbol.widthAnchor),
-            urgentSymbol.centerYAnchor.constraint(equalTo: itemImageView.topAnchor, constant: 12),
-            urgentSymbol.centerXAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: 12)
+            urgentSymbol.centerYAnchor.constraint(equalTo: itemImageView.topAnchor, constant: K.symbolSize/2),
+            urgentSymbol.centerXAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: K.symbolSize/2)
         ])
     }
 
     // MARK: Configuration
     func configure(for adItem: AdItem) {
+        loadImage(url: adItem.thumbImageURL)
         titleLabel.text = adItem.title
         priceLabel.text = adItem.price
         dateLabel.text = "Posté le \(adItem.creationDate.short ?? "")"
-        categoryLabel.text = adItem.category
+        categoryPill.configure(with: adItem.category, and: false)
         urgentSymbol.isHidden = !adItem.isUrgent
     }
+
+    private func loadImage(url: URL?) {
+        guard let url else { return }
+
+        imageLoadingCancellable = imageLoader.loadImage(for: url)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+        } receiveValue: { [weak self] image in
+            self?.itemImageView.image = image
+        }
+
+    }
+
 }

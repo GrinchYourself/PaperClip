@@ -12,27 +12,31 @@ class AdDetailsViewController: UIViewController {
 
     enum K {
         static let spacing = 8.0
-        static let imageSize = 100.0
+        static let imageHeight = 200.0
         static let betweenElement = 16.0
+        static let symbolSize = UrgentSymbol.K.symbolSize
+        static let cornerRadius = 5.0
     }
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = .red
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
 
     private let contentView: UIView = {
         let contentView = UIView()
-        contentView.backgroundColor = .green
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
 
     private let itemImageView: UIImageView = {
-        var imageView = UIImageView(frame: CGRect.zero)
-        imageView.contentMode = .center
+        var imageView = UIImageView(image: UIImage(systemName: "photo"))
+        imageView.backgroundColor = .secondarySystemFill
+        imageView.tintColor = .systemGray5
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = K.cornerRadius
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -46,12 +50,10 @@ class AdDetailsViewController: UIViewController {
         return label
     }()
 
-    let categoryLabel: UILabel = {
-        let label = UILabel(frame: CGRect.zero)
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    let categoryPill: CategoryPill = {
+        let pill = CategoryPill(frame: CGRect.zero)
+        pill.translatesAutoresizingMaskIntoConstraints = false
+        return pill
     }()
 
     let priceLabel: UILabel = {
@@ -70,18 +72,10 @@ class AdDetailsViewController: UIViewController {
         return label
     }()
 
-    let urgentSymbol: UIView = {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 16.0)
-        let boltImage = UIImage(systemName: "bookmark.fill", withConfiguration: configuration)
-
-        let imageView = UIImageView(image: boltImage)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .systemOrange
-
-        var transform = CGAffineTransform.identity
-        transform = transform.rotated(by: -.pi/4)
-        imageView.transform = transform
-        return imageView
+    let urgentSymbol: UrgentSymbol = {
+        let symbol = UrgentSymbol(frame: CGRect.zero)
+        symbol.translatesAutoresizingMaskIntoConstraints = false
+        return symbol
     }()
 
     let descriptionLabel: UILabel = {
@@ -95,7 +89,7 @@ class AdDetailsViewController: UIViewController {
 
     // MARK: Private properties
     private let viewModel: AdDetailsViewModeling
-    private weak var flow: ListingAdsFlow?
+    private let imageLoader: ImageLoading = ImageLoader.loader
     private var subscriptions = Set<AnyCancellable>()
     private var fetchCancellable: AnyCancellable?
 
@@ -112,6 +106,7 @@ class AdDetailsViewController: UIViewController {
     // MARK: Self
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemGray5
 
         registerHandlers()
 
@@ -132,13 +127,28 @@ class AdDetailsViewController: UIViewController {
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
             .sink { [weak self] details in
-                self?.titleLabel.text = details?.title
-                self?.priceLabel.text = details?.price.euros
-                self?.dateLabel.text = "Posté le \(details?.creationDate.short ?? "")"
-                self?.categoryLabel.text = details?.category
-                self?.urgentSymbol.isHidden = !(details?.isUrgent ?? false)
-                self?.descriptionLabel.text = details?.description
+                guard let details else { return }
+                self?.loadImage(url: details.imageURL)
+                self?.titleLabel.text = details.title
+                self?.priceLabel.text = details.price.euros
+                self?.dateLabel.text = "Posté le \(details.creationDate.short ?? "")"
+                self?.categoryPill.configure(with: details.category, and: false)
+                self?.urgentSymbol.isHidden = !(details.isUrgent)
+                self?.descriptionLabel.text = details.description
             }.store(in: &subscriptions)
+    }
+
+    private func loadImage(url: URL?) {
+
+        guard let url else { return }
+        imageLoader.loadImage(for: url)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+        } receiveValue: { [weak self] image in
+            self?.itemImageView.image = image
+        }.store(in: &subscriptions)
+
     }
 
     private func applyConstraints() {
@@ -148,7 +158,7 @@ class AdDetailsViewController: UIViewController {
         contentView.addSubview(itemImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
-        contentView.addSubview(categoryLabel)
+        contentView.addSubview(categoryPill)
         contentView.addSubview(dateLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(urgentSymbol)
@@ -169,25 +179,23 @@ class AdDetailsViewController: UIViewController {
             itemImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
             itemImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.spacing),
             itemImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
-            itemImageView.heightAnchor.constraint(equalToConstant: 200),
+            itemImageView.heightAnchor.constraint(equalToConstant: K.imageHeight),
             //Category
-            categoryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
-            categoryLabel.topAnchor.constraint(equalTo: itemImageView.bottomAnchor, constant: K.spacing),
+            categoryPill.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
+            categoryPill.topAnchor.constraint(equalTo: itemImageView.bottomAnchor, constant: K.spacing),
             //Title
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
-            titleLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: K.spacing),
+            titleLabel.topAnchor.constraint(equalTo: categoryPill.bottomAnchor, constant: K.spacing),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
             //Price
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: K.betweenElement),
             //Date
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.spacing),
             dateLabel.firstBaselineAnchor.constraint(equalTo: priceLabel.lastBaselineAnchor),
             //UrgentSymbol
-            urgentSymbol.widthAnchor.constraint(equalToConstant: 24),
-            urgentSymbol.heightAnchor.constraint(equalTo: urgentSymbol.widthAnchor),
-            urgentSymbol.centerYAnchor.constraint(equalTo: itemImageView.topAnchor, constant: 12),
-            urgentSymbol.centerXAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: 12),
+            urgentSymbol.centerYAnchor.constraint(equalTo: itemImageView.topAnchor, constant: K.symbolSize/2),
+            urgentSymbol.centerXAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: K.symbolSize/2),
             //Description
             descriptionLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: K.betweenElement),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.spacing),

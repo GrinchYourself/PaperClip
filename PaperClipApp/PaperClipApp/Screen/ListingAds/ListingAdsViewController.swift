@@ -68,6 +68,7 @@ class ListingAdsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "PaperClip"
+        view.backgroundColor = .quaternarySystemFill
 
         registerHandlers()
 
@@ -105,6 +106,7 @@ class ListingAdsViewController: UIViewController {
 
     private func configureTableView() {
         tableView.delegate = self
+        tableView.backgroundColor = .quaternarySystemFill
         tableView.register(AdItemTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .label
@@ -114,7 +116,7 @@ class ListingAdsViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 
@@ -148,6 +150,10 @@ extension ListingAdsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let itemIdentifier = tableViewDataSource.itemIdentifier(for: indexPath)?.identifier else { return }
         flow?.showAdDetails(itemIdentifier)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 116
+    }
 }
