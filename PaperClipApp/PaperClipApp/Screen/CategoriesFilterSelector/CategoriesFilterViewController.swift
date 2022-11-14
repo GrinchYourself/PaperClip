@@ -76,7 +76,7 @@ class CategoriesFilterViewController: UIViewController {
     // MARK: Self
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor = .systemGray5
         registerHandlers()
 
         configureCollectionView()
@@ -86,7 +86,7 @@ class CategoriesFilterViewController: UIViewController {
     // MARK: private methods
     private func configureCollectionView() {
         collectionView.contentInset = UIEdgeInsets(top: K.spacing, left: K.spacing, bottom: K.spacing, right: K.spacing)
-        collectionView.backgroundColor = .secondarySystemFill
+        collectionView.backgroundColor = .systemGray5
         collectionView.delegate = self
         collectionView.register(FilterCategoryCollectionViewCell.self, forCellWithReuseIdentifier: K.cellIdentifier)
         view.addSubview(collectionView)

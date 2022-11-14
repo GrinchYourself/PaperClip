@@ -32,7 +32,7 @@ class AdDetailsViewController: UIViewController {
 
     private let itemImageView: UIImageView = {
         var imageView = UIImageView(image: UIImage(systemName: "photo"))
-        imageView.backgroundColor = .secondarySystemFill
+        imageView.backgroundColor = .quaternarySystemFill
         imageView.tintColor = .systemGray5
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = K.cornerRadius

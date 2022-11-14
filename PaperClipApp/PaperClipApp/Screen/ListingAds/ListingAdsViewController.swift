@@ -117,7 +117,6 @@ class ListingAdsViewController: UIViewController {
 
     private func configureTableView() {
         tableView.delegate = self
-        tableView.backgroundColor = .quaternarySystemFill
         tableView.register(AdItemTableViewCell.self, forCellReuseIdentifier: K.cellIdentifier)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .label

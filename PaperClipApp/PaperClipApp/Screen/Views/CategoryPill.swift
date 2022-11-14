@@ -30,7 +30,7 @@ class CategoryPill: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.borderWidth = 2
-        layer.borderColor = UIColor.secondarySystemBackground.cgColor
+        layer.borderColor = UIColor.systemGray.cgColor
         layer.cornerRadius = 5
         configureLabel()
     }
@@ -42,7 +42,7 @@ class CategoryPill: UIView {
     // MARK: Public methods
     func configure(with name: String, and isFilter: Bool) {
         label.text = name
-        backgroundColor = isFilter ? .secondarySystemBackground : .tertiarySystemBackground
+        backgroundColor = isFilter ? .systemGray : .systemGray3
     }
 
     // MARK: Private methods

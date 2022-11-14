@@ -72,7 +72,7 @@ class AdItemTableViewCell: UITableViewCell {
     // MARK: Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .systemGray6
+        contentView.backgroundColor = .systemGray5
         applyConstraints()
     }
 

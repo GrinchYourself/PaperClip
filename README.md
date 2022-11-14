@@ -14,6 +14,7 @@
         - ViewModels
         - Helpers
 ## Could be improved
-- Using a CaheLoader to deal with the download of images
-- Use a LocalStore (CoreData) to cache and/or persist the results of remote calls instead of storing them in memory
-- improve the UI of the app 
+- Using a CacheLoader to deal with the download of images
+- Using a LocalStore (CoreData) to cache and/or persist the results of remote calls instead of storing them in memory
+- A finest management of the errors inside each module and for the ViewModels
+- Improving the UI of the app
