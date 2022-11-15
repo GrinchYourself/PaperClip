@@ -42,7 +42,6 @@
 		ACDE0F742917C8AC00A0271D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACDE0F722917C8AC00A0271D /* LaunchScreen.storyboard */; };
 		ACDE0F7F2917C8AD00A0271D /* AdItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE0F7E2917C8AD00A0271D /* AdItemTests.swift */; };
 		ACF0B59C291AEFEA0002D9C0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF0B59B291AEFEA0002D9C0 /* Coordinator.swift */; };
-		ACF0B59F291AF8B50002D9C0 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF0B59E291AF8B50002D9C0 /* Dependencies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,7 +91,6 @@
 		ACDE0F7A2917C8AD00A0271D /* PaperClipAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaperClipAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACDE0F7E2917C8AD00A0271D /* AdItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdItemTests.swift; sourceTree = "<group>"; };
 		ACF0B59B291AEFEA0002D9C0 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		ACF0B59E291AF8B50002D9C0 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +124,13 @@
 				ACBF85682921939100FBED1A /* UIApplication+isSplitOrSlideOver.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		AC6A36B92924599B008E37E0 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 		AC78CE47291EB6700089BD21 /* ViewModel */ = {
@@ -233,7 +238,7 @@
 			children = (
 				ACD440B0291CF2CF00FBC793 /* Helpers */,
 				ACF0B59A291AEFDA0002D9C0 /* Coordinator */,
-				ACF0B59D291AF88F0002D9C0 /* Dependencies */,
+				AC6A36B92924599B008E37E0 /* Dependencies */,
 				AC5FBF9A2918312A008CEFC7 /* Extension */,
 				AC975379291C1A3A0018A531 /* Screen */,
 				ACDE0F672917C8AC00A0271D /* AppDelegate.swift */,
@@ -261,14 +266,6 @@
 				ACF0B59B291AEFEA0002D9C0 /* Coordinator.swift */,
 			);
 			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		ACF0B59D291AF88F0002D9C0 /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				ACF0B59E291AF8B50002D9C0 /* Dependencies.swift */,
-			);
-			path = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -396,7 +393,6 @@
 				ACBF85602920FFD800FBED1A /* ImageLoader.swift in Sources */,
 				AC78CE42291E7E3F0089BD21 /* AdDetailsViewModel.swift in Sources */,
 				ACBF855C291FAAC000FBED1A /* CategoryPill.swift in Sources */,
-				ACF0B59F291AF8B50002D9C0 /* Dependencies.swift in Sources */,
 				AC78CE40291E7DFA0089BD21 /* AdDetailsViewController.swift in Sources */,
 				ACDE0F682917C8AC00A0271D /* AppDelegate.swift in Sources */,
 				ACBF8563292139C200FBED1A /* UrgentSymbol.swift in Sources */,
